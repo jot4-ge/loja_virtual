@@ -1,9 +1,9 @@
 def iniciar_interface():
     import tkinter as tk
     from tkinter import messagebox
-    from roupa import Roupa
-    from cliente import ClientePessoa
-    from pedido import Pedido
+    from package.roupa import Roupa
+    from package.cliente import ClientePessoa
+    from package.pedido import Pedido
 
     catalogo = [
     Roupa(1, "Camisa Polo Lacoste", "Camisa importada da França", 350.00, 10, "M", "Branca", "Camisa"),

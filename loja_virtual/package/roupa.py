@@ -1,4 +1,4 @@
-from produto import Produto
+from .produto import Produto
 
 class Roupa(Produto):
     def __init__(self, id, nome, descricao, preco, estoque, tamanho, cor, tipo):

@@ -1,4 +1,4 @@
-from carrinho import Carrinho
+from .carrinho import Carrinho
 import json
 
 class Pedido:
