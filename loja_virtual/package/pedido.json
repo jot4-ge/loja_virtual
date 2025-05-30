@@ -1,0 +1,12 @@
+{
+    "cliente": "João Silva (CPF: 123.456.789-00)",
+    "itens": [
+        {
+            "nome": "Calça Jeans Levi's",
+            "preco": 420.0,
+            "quantidade": 2,
+            "subtotal": 840.0
+        }
+    ],
+    "total": 840.0
+}
