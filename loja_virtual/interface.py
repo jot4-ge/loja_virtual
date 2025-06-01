@@ -1,8 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
 import re
-import json
-import os
 from package.roupa import Roupa
 from package.cliente import ClientePessoa
 from package.pedido import Pedido
@@ -24,28 +22,11 @@ def iniciar_interface():
     cliente = None
     pedido = None
 
-    # Arquivo para salvar cadastro
-    arquivo_cadastro = "cadastro_lembrado.json"
-
-    def salvar_cadastro(nome, email, cpf):
-        dados = {"nome": nome, "email": email, "cpf": cpf}
-        with open(arquivo_cadastro, "w") as f:
-            json.dump(dados, f)
-
-    def carregar_cadastro():
-        if os.path.exists(arquivo_cadastro):
-            with open(arquivo_cadastro, "r") as f:
-                dados = json.load(f)
-                return dados.get("nome", ""), dados.get("email", ""), dados.get("cpf", "")
-        return "", "", ""
-
     def validar_email(email):
-        # Regex simples para validar email
         regex = r'^[\w\.-]+@[\w\.-]+\.\w+$'
         return re.match(regex, email) is not None
 
     def validar_nome(nome):
-        # Nome só letras (maiúsculas/minúsculas) e espaços
         return all(c.isalpha() or c.isspace() for c in nome) and len(nome) > 0
 
     def registrar_cliente():
@@ -73,13 +54,6 @@ def iniciar_interface():
         cliente = ClientePessoa(nome, email, cpf)
         pedido = Pedido(cliente)
         messagebox.showinfo("Sucesso", f"Cliente {nome} registrado com sucesso.")
-
-        if var_lembrar.get():
-            salvar_cadastro(nome, email, cpf)
-        else:
-            # Se não quiser lembrar, apaga arquivo se existir
-            if os.path.exists(arquivo_cadastro):
-                os.remove(arquivo_cadastro)
 
     def mostrar_catalogo():
         output.config(state="normal")
@@ -151,7 +125,6 @@ def iniciar_interface():
         entry_nome.delete(0, tk.END)
         entry_email.delete(0, tk.END)
         entry_cpf.delete(0, tk.END)
-        var_lembrar.set(0)
         output.config(state="normal")
         output.delete("1.0", tk.END)
         output.insert(tk.END, "Pedido finalizado com sucesso. Inicie um novo cadastro para continuar.")
@@ -163,7 +136,6 @@ def iniciar_interface():
     root = tk.Tk()
     root.title("Loja Virtual - Cadastro e Compras")
 
-    # Definir tamanho fixo da janela e centralizar
     largura = 900
     altura = 600
     largura_tela = root.winfo_screenwidth()
@@ -171,9 +143,8 @@ def iniciar_interface():
     pos_x = int(largura_tela/2 - largura/2)
     pos_y = int(altura_tela/2 - altura/2)
     root.geometry(f"{largura}x{altura}+{pos_x}+{pos_y}")
-    root.resizable(False, False)  # impede redimensionamento
+    root.resizable(False, False)
 
-    # Fontes padrão
     fonte = ("Arial", 10)
 
     cadastro_frame = tk.LabelFrame(root, text="Cadastro do Cliente", font=fonte)
@@ -191,11 +162,7 @@ def iniciar_interface():
     entry_cpf = tk.Entry(cadastro_frame, font=fonte)
     entry_cpf.grid(row=2, column=1, padx=5, pady=2, sticky="w")
 
-    var_lembrar = tk.IntVar()
-    chk_lembrar = tk.Checkbutton(cadastro_frame, text="Lembrar cadastro", variable=var_lembrar, font=fonte)
-    chk_lembrar.grid(row=3, column=0, columnspan=2, sticky="w", padx=5)
-
-    tk.Button(cadastro_frame, text="Registrar Cliente", command=registrar_cliente, font=fonte).grid(row=4, column=0, columnspan=2, pady=5)
+    tk.Button(cadastro_frame, text="Registrar Cliente", command=registrar_cliente, font=fonte).grid(row=3, column=0, columnspan=2, pady=5)
 
     compra_frame = tk.LabelFrame(root, text="Catálogo e Carrinho", font=fonte)
     compra_frame.pack(padx=10, pady=10, fill="x")
@@ -216,15 +183,10 @@ def iniciar_interface():
     output = tk.Text(root, height=15, width=80, state="disabled", font=fonte)
     output.pack(pady=10)
 
-    # Ao iniciar, tentar carregar cadastro salvo
-    nome_salvo, email_salvo, cpf_salvo = carregar_cadastro()
-    if nome_salvo or email_salvo or cpf_salvo:
-        entry_nome.insert(0, nome_salvo)
-        entry_email.insert(0, email_salvo)
-        entry_cpf.insert(0, cpf_salvo)
-        var_lembrar.set(1)
-
     root.mainloop()
+
+if __name__ == "__main__":
+    iniciar_interface()
 
 
 
