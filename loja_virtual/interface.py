@@ -1,11 +1,11 @@
-def iniciar_interface():
-    import tkinter as tk
-    from tkinter import messagebox
-    from package.roupa import Roupa
-    from package.cliente import ClientePessoa
-    from package.pedido import Pedido
+import tkinter as tk
+from tkinter import messagebox
+from package.roupa import Roupa
+from package.cliente import ClientePessoa
+from package.pedido import Pedido
 
-    catalogo = [
+def iniciar_interface():
+     catalogo = [
     Roupa(1, "Camisa Polo Lacoste", "Camisa importada da França", 350.00, 10, "M", "Branca", "Camisa"),
     Roupa(2, "Calça Jeans Levi's", "Original dos EUA", 420.00, 5, "42", "Azul", "Calça"),
     Roupa(3, "Casaco North Face", "Casaco térmico canadense", 980.00, 3, "G", "Preto", "Casaco"),
@@ -16,7 +16,7 @@ def iniciar_interface():
     Roupa(8, "Short Nike", "Short esportivo", 150.00, 15, "M", "Preto", "Short"),
     Roupa(9, "Camisa Xadrez Zara", "Estilo casual", 260.00, 6, "G", "Vermelha", "Camisa"),
     Roupa(10, "Saia Jeans", "Moda feminina", 200.00, 9, "38", "Azul", "Saia")
-]
+    ]
 
     cliente = None
     pedido = None
@@ -34,11 +34,14 @@ def iniciar_interface():
         messagebox.showinfo("Sucesso", f"Cliente {nome} registrado com sucesso.")
 
     def mostrar_catalogo():
+        output.config(state="normal")
         output.delete("1.0", tk.END)
         for produto in catalogo:
             output.insert(tk.END, f"{produto.get_id()}: {produto.get_nome()} - R${produto.get_preco():.2f} (Estoque: {produto.get_estoque()})\n")
+        output.config(state="disabled")
 
     def adicionar_item():
+        nonlocal pedido
         if not pedido:
             messagebox.showerror("Erro", "Registre o cliente primeiro.")
             return
@@ -62,6 +65,7 @@ def iniciar_interface():
         if not pedido:
             messagebox.showerror("Erro", "Registre o cliente primeiro.")
             return
+        output.config(state="normal")
         output.delete("1.0", tk.END)
         itens = pedido.get_carrinho().get_itens()
         if not itens:
@@ -72,6 +76,7 @@ def iniciar_interface():
                 q = item["quantidade"]
                 output.insert(tk.END, f"{p.get_nome()} - {q}x - R${p.get_preco() * q:.2f}\n")
             output.insert(tk.END, f"Total: R${pedido.get_carrinho().calcular_total():.2f}\n")
+        output.config(state="disabled")
 
     def finalizar_pedido():
         if not pedido:
@@ -89,7 +94,6 @@ def iniciar_interface():
     root = tk.Tk()
     root.title("Loja Virtual - Cadastro e Compras")
 
-    # Cadastro
     cadastro_frame = tk.LabelFrame(root, text="Cadastro do Cliente")
     cadastro_frame.pack(padx=10, pady=10)
 
@@ -107,7 +111,6 @@ def iniciar_interface():
 
     tk.Button(cadastro_frame, text="Registrar Cliente", command=registrar_cliente).grid(row=3, column=0, columnspan=2, pady=5)
 
-    # Compras
     compra_frame = tk.LabelFrame(root, text="Catálogo e Carrinho")
     compra_frame.pack(padx=10, pady=10)
 
@@ -124,7 +127,8 @@ def iniciar_interface():
     tk.Button(compra_frame, text="Ver Carrinho", command=ver_carrinho).grid(row=1, column=2, pady=5)
     tk.Button(compra_frame, text="Finalizar Pedido", command=finalizar_pedido).grid(row=1, column=3, pady=5)
 
-    output = tk.Text(root, height=15, width=80)
+    output = tk.Text(root, height=15, width=80, state="disabled")
     output.pack(pady=10)
 
     root.mainloop()
+
