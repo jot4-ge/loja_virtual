@@ -23,12 +23,17 @@ def iniciar_interface():
 
     def registrar_cliente():
         nonlocal cliente, pedido
-        nome = entry_nome.get()
-        email = entry_email.get()
-        cpf = entry_cpf.get()
+        nome = entry_nome.get().strip()
+        email = entry_email.get().strip()
+        cpf = entry_cpf.get().strip()
+
         if not nome or not email or not cpf:
-            messagebox.showerror("Erro", "Todos os campos são obrigatórios.")
+            messagebox.showerror("Campos obrigatórios", "Preencha nome, e-mail e CPF.")
             return
+        if not cpf.isdigit() or len(cpf) != 11:
+            messagebox.showerror("CPF inválido", "O CPF deve conter exatamente 11 dígitos numéricos.")
+            return
+
         cliente = ClientePessoa(nome, email, cpf)
         pedido = Pedido(cliente)
         messagebox.showinfo("Sucesso", f"Cliente {nome} registrado com sucesso.")
@@ -43,11 +48,15 @@ def iniciar_interface():
     def adicionar_item():
         nonlocal pedido
         if not pedido:
-            messagebox.showerror("Erro", "Registre o cliente primeiro.")
+            messagebox.showerror("Cliente não registrado", "Você precisa registrar um cliente antes de continuar.")
             return
         try:
             id_produto = int(entry_id.get())
             quantidade = int(entry_qtd.get())
+            if quantidade <= 0:
+                messagebox.showerror("Quantidade inválida", "A quantidade deve ser maior que zero.")
+                return
+
             produto = next((p for p in catalogo if p.get_id() == id_produto), None)
             if produto:
                 if produto.get_estoque() >= quantidade:
@@ -55,15 +64,15 @@ def iniciar_interface():
                     produto.set_estoque(produto.get_estoque() - quantidade)
                     messagebox.showinfo("Sucesso", f"{quantidade}x {produto.get_nome()} adicionado(s) ao carrinho.")
                 else:
-                    messagebox.showerror("Erro", "Estoque insuficiente.")
+                    messagebox.showerror("Estoque insuficiente", "A quantidade solicitada excede o estoque disponível.")
             else:
-                messagebox.showerror("Erro", "Produto não encontrado.")
+                messagebox.showerror("Produto não encontrado", "O ID informado não corresponde a nenhum produto.")
         except ValueError:
-            messagebox.showerror("Erro", "ID e quantidade devem ser números.")
+            messagebox.showerror("Entrada inválida", "ID e quantidade devem ser números inteiros.")
 
     def ver_carrinho():
         if not pedido:
-            messagebox.showerror("Erro", "Registre o cliente primeiro.")
+            messagebox.showerror("Cliente não registrado", "Você precisa registrar um cliente antes de continuar.")
             return
         output.config(state="normal")
         output.delete("1.0", tk.END)
@@ -80,10 +89,10 @@ def iniciar_interface():
 
     def finalizar_pedido():
         if not pedido:
-            messagebox.showerror("Erro", "Registre o cliente primeiro.")
+            messagebox.showerror("Cliente não registrado", "Você precisa registrar um cliente antes de continuar.")
             return
         if not pedido.get_carrinho().get_itens():
-            messagebox.showwarning("Aviso", "Carrinho vazio. Adicione produtos antes.")
+            messagebox.showwarning("Carrinho vazio", "Adicione produtos antes de finalizar o pedido.")
             return
         cpf_formatado = cliente.get_cpf().replace(".", "").replace("-", "")
         filename = f"pedido_{cpf_formatado}.json"
@@ -131,5 +140,6 @@ def iniciar_interface():
     output.pack(pady=10)
 
     root.mainloop()
+
 
 
