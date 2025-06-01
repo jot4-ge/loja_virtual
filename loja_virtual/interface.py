@@ -5,17 +5,17 @@ from package.cliente import ClientePessoa
 from package.pedido import Pedido
 
 def iniciar_interface():
-     catalogo = [
-    Roupa(1, "Camisa Polo Lacoste", "Camisa importada da França", 350.00, 10, "M", "Branca", "Camisa"),
-    Roupa(2, "Calça Jeans Levi's", "Original dos EUA", 420.00, 5, "42", "Azul", "Calça"),
-    Roupa(3, "Casaco North Face", "Casaco térmico canadense", 980.00, 3, "G", "Preto", "Casaco"),
-    Roupa(4, "Camiseta Supreme", "Exclusiva dos EUA", 550.00, 7, "M", "Preta", "Camiseta"),
-    Roupa(5, "Jaqueta Adidas", "Importada da Alemanha", 610.00, 4, "G", "Verde", "Jaqueta"),
-    Roupa(6, "Blusa Hering", "Blusa básica de algodão", 120.00, 12, "P", "Cinza", "Blusa"),
-    Roupa(7, "Moletom GAP", "Moletom com capuz", 290.00, 8, "GG", "Azul", "Moletom"),
-    Roupa(8, "Short Nike", "Short esportivo", 150.00, 15, "M", "Preto", "Short"),
-    Roupa(9, "Camisa Xadrez Zara", "Estilo casual", 260.00, 6, "G", "Vermelha", "Camisa"),
-    Roupa(10, "Saia Jeans", "Moda feminina", 200.00, 9, "38", "Azul", "Saia")
+    catalogo = [
+        Roupa(1, "Camisa Polo Lacoste", "Camisa importada da França", 350.00, 10, "M", "Branca", "Camisa"),
+        Roupa(2, "Calça Jeans Levi's", "Original dos EUA", 420.00, 5, "42", "Azul", "Calça"),
+        Roupa(3, "Casaco North Face", "Casaco térmico canadense", 980.00, 3, "G", "Preto", "Casaco"),
+        Roupa(4, "Camiseta Supreme", "Exclusiva dos EUA", 550.00, 7, "M", "Preta", "Camiseta"),
+        Roupa(5, "Jaqueta Adidas", "Importada da Alemanha", 610.00, 4, "G", "Verde", "Jaqueta"),
+        Roupa(6, "Blusa Hering", "Blusa básica de algodão", 120.00, 12, "P", "Cinza", "Blusa"),
+        Roupa(7, "Moletom GAP", "Moletom com capuz", 290.00, 8, "GG", "Azul", "Moletom"),
+        Roupa(8, "Short Nike", "Short esportivo", 150.00, 15, "M", "Preto", "Short"),
+        Roupa(9, "Camisa Xadrez Zara", "Estilo casual", 260.00, 6, "G", "Vermelha", "Camisa"),
+        Roupa(10, "Saia Jeans", "Moda feminina", 200.00, 9, "38", "Azul", "Saia")
     ]
 
     cliente = None
@@ -131,4 +131,5 @@ def iniciar_interface():
     output.pack(pady=10)
 
     root.mainloop()
+
 
